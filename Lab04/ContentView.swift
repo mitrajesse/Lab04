@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    // Array of all 52 cards
+    // Array of all 52 cards, exactly as provided in the instructions
     @State private var cards = ["A❤", "2❤", "3❤", "4❤", "5❤", "6❤", "7❤", "8❤", "9❤", "10❤", "J❤", "Q❤", "K❤",
                                 "A♣", "2♣", "3♣", "4♣", "5♣", "6♣", "7♣", "8♣", "9♣", "10♣", "J♣", "Q♣", "K♣",
                                 "A♦", "2♦", "3♦", "4♦", "5♦", "6♦", "7♦", "8♦", "9♦", "10♦", "J♦", "Q♦", "K♦",
@@ -46,6 +46,18 @@ struct CardView: View {
         }
     }
     
+    var rank: String {
+        if card.hasPrefix("10") {
+            return "10"
+        } else {
+            return String(card.prefix(1))
+        }
+    }
+    
+    var suit: String {
+        String(card.last!)
+    }
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -57,41 +69,39 @@ struct CardView: View {
                 )
             
             VStack {
-                // Top left corner for the rank and suit (symbol on the right)
+                // Top left corner
                 HStack {
-                    Text(card.prefix(1)) // Rank
+                    Text(rank)
                         .font(.headline)
-                        .foregroundColor(cardColor)
-                    Text(card.suffix(1)) // Suit
+                    Text(suit)
                         .font(.headline)
-                        .foregroundColor(cardColor)
                     Spacer()
                 }
-                Spacer()
-                
-                // Middle of the card: Rank on the left and Suit on the right with reduced spacing
-                HStack(spacing: 2) { // Reduced spacing between the rank and suit
-                    Text(card.prefix(1)) // Rank
-                        .font(.largeTitle)
-                        .foregroundColor(cardColor)
-                    Text(card.suffix(1)) // Suit
-                        .font(.largeTitle)
-                        .foregroundColor(cardColor)
-                }
+                .foregroundColor(cardColor)
                 
                 Spacer()
                 
-                // Bottom right corner for the rank and suit (symbol on the left of the number)
+                // Middle of the card
+                HStack(spacing: 2) {
+                    Text(rank)
+                        .font(.largeTitle)
+                    Text(suit)
+                        .font(.largeTitle)
+                }
+                .foregroundColor(cardColor)
+                
+                Spacer()
+                
+                // Bottom right corner
                 HStack {
-                    Text(card.suffix(1)) // Suit
+                    Text(suit)
                         .font(.headline)
-                        .foregroundColor(cardColor)
-                    Text(card.prefix(1)) // Rank
+                    Text(rank)
                         .font(.headline)
-                        .foregroundColor(cardColor)
                     Spacer()
                 }
-                .rotationEffect(.degrees(180)) // Rotate for bottom-right corner
+                .foregroundColor(cardColor)
+                .rotationEffect(.degrees(180))
             }
             .padding(10)
         }
