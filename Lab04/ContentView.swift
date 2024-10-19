@@ -1,13 +1,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    // Array of all 52 cards, exactly as provided in the instructions
     @State private var cards = ["A❤", "2❤", "3❤", "4❤", "5❤", "6❤", "7❤", "8❤", "9❤", "10❤", "J❤", "Q❤", "K❤",
                                 "A♣", "2♣", "3♣", "4♣", "5♣", "6♣", "7♣", "8♣", "9♣", "10♣", "J♣", "Q♣", "K♣",
                                 "A♦", "2♦", "3♦", "4♦", "5♦", "6♦", "7♦", "8♦", "9♦", "10♦", "J♦", "Q♦", "K♦",
                                 "A♠", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "10♠", "J♠", "Q♠", "K♠"].shuffled()
     
-    // Track selected cards
     @State private var selectedCards: Set<String> = []
     
     var body: some View {
@@ -24,7 +22,6 @@ struct ContentView: View {
         }
     }
     
-    // Toggle card selection
     private func toggleSelection(of card: String) {
         if selectedCards.contains(card) {
             selectedCards.remove(card)
@@ -38,26 +35,6 @@ struct CardView: View {
     let card: String
     let isSelected: Bool
     
-    var cardColor: Color {
-        if card.contains("❤") || card.contains("♦") {
-            return .red
-        } else {
-            return .black
-        }
-    }
-    
-    var rank: String {
-        if card.hasPrefix("10") {
-            return "10"
-        } else {
-            return String(card.prefix(1))
-        }
-    }
-    
-    var suit: String {
-        String(card.last!)
-    }
-    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -69,38 +46,26 @@ struct CardView: View {
                 )
             
             VStack {
-                // Top left corner
                 HStack {
-                    Text(rank)
-                        .font(.headline)
-                    Text(suit)
+                    Text(card)
                         .font(.headline)
                     Spacer()
                 }
-                .foregroundColor(cardColor)
                 
                 Spacer()
                 
-                // Middle of the card
-                HStack(spacing: 2) {
-                    Text(rank)
-                        .font(.largeTitle)
-                    Text(suit)
+                HStack {
+                    Text(card)
                         .font(.largeTitle)
                 }
-                .foregroundColor(cardColor)
                 
                 Spacer()
                 
-                // Bottom right corner
                 HStack {
-                    Text(suit)
-                        .font(.headline)
-                    Text(rank)
+                    Text(card)
                         .font(.headline)
                     Spacer()
                 }
-                .foregroundColor(cardColor)
                 .rotationEffect(.degrees(180))
             }
             .padding(10)
